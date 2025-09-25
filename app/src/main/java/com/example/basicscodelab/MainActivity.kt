@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -58,10 +60,14 @@ fun OnboardingScreen(
 }
 
 @Composable
-private fun Greetings(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.padding(8.dp)) {
-        Greeting(name = "Juan")
-        Greeting(name = "Valencia")
+private fun Greetings(
+    modifier: Modifier = Modifier,
+    names: List<String> = List(10) { "$it" }
+) {
+    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+        items(items = names) { name ->
+            Greeting(name = name)
+        }
     }
 }
 
@@ -71,9 +77,9 @@ private fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     Surface(
         color = MaterialTheme.colorScheme.primary,
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(24.dp)) {
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -86,6 +92,14 @@ private fun Greeting(name: String, modifier: Modifier = Modifier) {
                 Text(if (expanded) "Show less" else "Show more")
             }
         }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+fun GreetingPreview() {
+    BasicsCodelabTheme {
+        Greetings()
     }
 }
 
