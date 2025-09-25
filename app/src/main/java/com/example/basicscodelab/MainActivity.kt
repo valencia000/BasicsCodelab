@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,33 +26,49 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
-    // Estado reactivo: Compose redibuja si cambia
-    var expanded1 by rememberSaveable { mutableStateOf(false) }
-    var expanded2 by rememberSaveable { mutableStateOf(false) }
+    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
 
     Surface(modifier) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Greeting(
-                name = "Juan",
-                expanded = expanded1,
-                onExpandChange = { expanded1 = it }
-            )
-            Greeting(
-                name = "Valencia",
-                expanded = expanded2,
-                onExpandChange = { expanded2 = it }
-            )
+        if (shouldShowOnboarding) {
+            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
+        } else {
+            Greetings()
         }
     }
 }
 
 @Composable
-fun Greeting(
-    name: String,
-    expanded: Boolean,
-    onExpandChange: (Boolean) -> Unit,
+fun OnboardingScreen(
+    onContinueClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Welcome to the Basics Codelab!")
+        Button(
+            modifier = Modifier.padding(vertical = 24.dp),
+            onClick = onContinueClicked
+        ) {
+            Text("Continue")
+        }
+    }
+}
+
+@Composable
+private fun Greetings(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.padding(8.dp)) {
+        Greeting(name = "Juan")
+        Greeting(name = "Valencia")
+    }
+}
+
+@Composable
+private fun Greeting(name: String, modifier: Modifier = Modifier) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier.padding(8.dp)
@@ -65,10 +82,18 @@ fun Greeting(
                 Text(text = "Hello, ")
                 Text(text = name)
             }
-            ElevatedButton(onClick = { onExpandChange(!expanded) }) {
+            ElevatedButton(onClick = { expanded = !expanded }) {
                 Text(if (expanded) "Show less" else "Show more")
             }
         }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+@Composable
+fun OnboardingPreview() {
+    BasicsCodelabTheme {
+        OnboardingScreen(onContinueClicked = {})
     }
 }
 
