@@ -57,7 +57,11 @@ fun Greeting(
         modifier = modifier.padding(8.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Column(Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = if (expanded) 32.dp else 0.dp)
+            ) {
                 Text(text = "Hello, ")
                 Text(text = name)
             }
