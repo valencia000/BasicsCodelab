@@ -83,7 +83,7 @@ private fun Greeting(name: String, modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = if (expanded) 32.dp else 0.dp)
+                    .padding(bottom = if (expanded) 48.dp else 0.dp)
             ) {
                 Text(text = "Hello, ")
                 Text(text = name)
